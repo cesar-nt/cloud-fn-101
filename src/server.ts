@@ -2,7 +2,6 @@ import express, { Request, Response } from 'express';
 import axios from 'axios';
 import dotenv from 'dotenv';
 
-// Load environment variables
 dotenv.config();
 
 const app = express();
@@ -22,7 +21,6 @@ const headers = {
     Accept: "application/vnd.github.v3+json"
 };
 
-// Type Definitions
 interface PullRequest {
     repository: string;
     title: string;
@@ -33,7 +31,6 @@ interface PullRequest {
     approvals: number;
 }
 
-// Helper function to calculate time since PR opening
 const timeSince = (date: string): number => {
     const now = new Date();
     const openedAt = new Date(date);
@@ -59,7 +56,7 @@ const getOpenPRs = async (repo: string): Promise<PullRequest[]> => {
                 repository: repo,
                 title: pr.title,
                 number: pr.number,
-                author: pr.user.login, // Include PR author
+                author: pr.user.login, // PR author
                 created_at: pr.created_at,
                 days_open: timeSince(pr.created_at),
                 approvals
@@ -86,7 +83,6 @@ const getAllOpenPRs = async (): Promise<Record<string, PullRequest[]>> => {
     }, {});
 };
 
-// Express Route: Fetch PR Data
 app.get('/open-prs', async (req: Request, res: Response) => {
     try {
         const openPRs = await getAllOpenPRs();
