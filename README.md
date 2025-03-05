@@ -1,7 +1,7 @@
-# PR Review Bot
+# Cloud Function 101
 
-This initial version exposes a GET endpoint /open-prs that fetch pull request details given a  github organization, list of code repositories, and github access token.
-Long-term goal is to build a summary message that can be published into a Slack channel under a configurable schedule.
+This initial version exposes a GET endpoint `/open-prs` that fetch pull request details given a  github organization, list of code repositories, and a github access token.
+Long-term goal is to build a summary message that can be published into a Slack channel under a configurable schedule, a.k.a `PR Review Bot`
 
 ## Getting Started
 This code is intended to be deployed as a GCP Cloud Function.
