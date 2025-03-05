@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import axios from 'axios';
 import dotenv from 'dotenv';
+import { onRequest } from "firebase-functions/v2/https";
 
 dotenv.config();
 
@@ -44,9 +45,10 @@ const getOpenPRs = async (repo: string): Promise<PullRequest[]> => {
         const url = `https://api.github.com/repos/${ORGANIZATION}/${repo}/pulls?state=open`;
         const response = await axios.get(url, { headers });
         const pullRequests = response.data;
+        const openPullRequests = pullRequests.filter((pr: any) => !pr.draft);
 
         // Fetch reviews for each PR to count approvals
-        const prDetails = await Promise.all(pullRequests.map(async (pr: any) => {
+        const prDetails = await Promise.all(openPullRequests.map(async (pr: any) => {
             const reviewUrl = `https://api.github.com/repos/${ORGANIZATION}/${repo}/pulls/${pr.number}/reviews`;
             const reviewResponse = await axios.get(reviewUrl, { headers });
 
@@ -93,6 +95,11 @@ app.get('/open-prs', async (req: Request, res: Response) => {
 });
 
 // Start Express Server
+/*
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+*/
+
+// Wrapper for GCP Cloud Fn - entrypoint
+export const demoCloudFunction = onRequest(app);
