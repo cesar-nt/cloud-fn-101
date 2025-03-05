@@ -85,6 +85,8 @@ const getAllOpenPRs = async (): Promise<Record<string, PullRequest[]>> => {
     }, {});
 };
 
+
+// GET Endpoint
 app.get('/open-prs', async (req: Request, res: Response) => {
     try {
         const openPRs = await getAllOpenPRs();
@@ -94,12 +96,12 @@ app.get('/open-prs', async (req: Request, res: Response) => {
     }
 });
 
+
 // Start Express Server
-/*
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
-*/
+
 
 // Wrapper for GCP Cloud Fn - entrypoint
-export const demoCloudFunction = onRequest(app);
+// export const demoCloudFunction = onRequest(app);
